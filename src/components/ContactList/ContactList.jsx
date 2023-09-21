@@ -1,22 +1,15 @@
-import { Component } from 'react';
+// import { useState } from 'react';
  import Contact from 'components/Contact/Contact';
 import css from './ContactList.module.css'
-  import contacts from 'components/contacts.json';
+//   import contacts from 'components/contacts.json';
 
 
-class ContactList extends Component {
+const ContactList =({contacts,filteredContacts, deleteContacts} ) => {
 
 
-    state = { contacts}
+    // state = { contacts}
 
-
-
-
-    render() {
-           
-         
-    const { contacts } = this.state;
-    const { filteredContacts, deleteContacts } = this.props;
+    // const { filteredContacts, deleteContacts } = this.props;
         
       
             return (
@@ -32,10 +25,8 @@ class ContactList extends Component {
                         />))}
                 </ul>)
         }
-    }
     
-
-
+    
 
 export default ContactList;
 

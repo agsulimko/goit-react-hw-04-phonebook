@@ -1,94 +1,90 @@
-import React, {Component} from 'react';
+// import {Component} from 'react'
+import { useEffect, useState} from 'react'
 import css from './App.module.css'
-
-
- import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid'
 import ContactForm from 'components/ContactForm/ContactForm';
-
 import ContactList from './ContactList/ContactList'
- import Filter from 'components/Filter/Filter';
-
- import contacts from './contacts.json';      
-       
+import Filter from 'components/Filter/Filter'
+import contactslist from 'components/contactslist.json'       
+         
       
-        
- export default class App extends Component {
+const App=() => {
+const prevContacts=contactslist;
+    const [contacts, setContacts]= useState(contactslist);
 
- state = {
-    contacts,
-  //  contacts: initialContacts,
-    filter: '',
-    name: '',
-    number: ''
-  };
+   const [filter, setFilter]= useState('');
+  //  const [name, setName]=useState('');
+  //  const [number, setNumber]=useState('');
+    //  const [prevContacts, setPrevContacts] = useState(contactslist); // Добавляем переменную для хранения предыдущего состояния
 
-  componentDidMount() {
+ 
+    useEffect(() => {
     const storedContacts = localStorage.getItem('contacts');
-    console.log(storedContacts);
     const parsedContacts = JSON.parse(storedContacts);
-    console.log('parsedContacts=',parsedContacts);
-     console.log(parsedContacts.length);
 
-     if ( parsedContacts.length <= 0) return
-  this.setState({ contacts: parsedContacts }) 
-    }
+      if (parsedContacts <= 0) return
+      setContacts(parsedContacts) 
+   
+   }, []);
 
- componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      // console.log(this.state.contacts);
-      console.log(prevState.contacts);
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
-
+// <= parsedContacts.length === 0
+ 
+    useEffect(() => {
+     if (contacts !== prevContacts ) {
+       console.log(contacts);
+      console.log(prevContacts);
+    localStorage.setItem('contacts',JSON.stringify(contacts));
+}}, [contacts])
 
   
-    createContacts = (dataForm) => {
-		const isAlreadyExist = this.state.contacts.find(
+   const createContacts = (dataForm) => {
+		const isAlreadyExist = contacts.find(
 			(el) => el.name === dataForm.name
 		)
-		if (isAlreadyExist) return alert('Already Exist')
+		if (isAlreadyExist) return alert('Already Exist');
 
-		const newContact = {...dataForm,id: nanoid(),}
-		this.setState((prev) => ({ contacts: [newContact, ...prev.contacts],
-    }))
-     
+		const newContact = {
+			...dataForm,
+			id: nanoid(),
+		}
+		setContacts((prev) => 
+			 [newContact, ...prev],
+		)
 	}
  
+
+
+
   
-   handleFilter = ({ target: { value } }) => {
-    this.setState({
-      filter: value,
-    });
+  const handleFilter = ({ target: { value } }) => {
+    setFilter(value);
   };
 
-  deleteContacts = (id) => {
-         	this.setState((prev) => ({
-        		contacts: prev.contacts.filter(el => el.id !== id),
-        	}))
-  }
-  
-  render() {
 
-    const { contacts, filter } = this.state;
+ const deleteContacts = (id) => {
+  setContacts((prev) => (
+        		 prev.filter(el => el.id !== id)
+        	))
+         };
+
+    console.log(contacts);
 
  const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
 
-
     return (
 
       <div className='container'>
   <h1 className={css.h1}>Phonebook</h1>
-        <ContactForm createContacts={this.createContacts}/> 
+        <ContactForm createContacts={createContacts}/> 
        
 
   <h2 className={css.h2}>Contacts</h2>
-          <Filter handleFilter ={this.handleFilter} />     
+          <Filter handleFilter ={handleFilter} />     
         
-        <ContactList contacts={this.state.contacts}
-         deleteContacts={this.deleteContacts}
+        <ContactList contacts={contacts}
+         deleteContacts={deleteContacts}
             filteredContacts={filteredContacts}
         />
 
@@ -98,4 +94,129 @@ import ContactList from './ContactList/ContactList'
 
     )
   }
-};
+
+  
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { useEffect, useState} from 'react'
+// import css from './App.module.css'
+// import { nanoid } from 'nanoid'
+// import ContanctForm from './ContactForm/ContactForm';
+// import ContactList from './ContactList/ContactList'
+// import Filter from 'components/Filter/Filter'
+//  import contactslist from './contactslist.json'       
+   
+      
+        
+// const App=() => {
+
+//   const [contacts, setContacts]=useState(contactslist);
+//    const [filter, setFilter]=useState('');
+//   // const [name, setName]=useState('');
+//   // const [number, setNumber]=useState('');
+
+
+
+// useEffect(() => {
+ 
+//   const storedContacts = localStorage.getItem('contacts');
+//   console.log(storedContacts);
+//   const parsedContacts = JSON.parse(storedContacts);
+//   console.log(parsedContacts);
+//   console.log(parsedContacts.length);
+//  contacts && parsedContacts.length<= 0 &&setContacts( parsedContacts ) 
+
+   
+// }, [])
+
+// useEffect(() => {
+// contacts && localStorage.setItem('contacts', JSON.stringify(contacts))
+
+   
+//    },[contacts]);
+
+
+
+  
+//   const createContacts = (dataForm) => {
+// 		const isAlreadyExist = contacts.find(
+// 			(el) => el.name === dataForm.name
+// 		)
+// 		if (isAlreadyExist) return alert('Already Exist');
+
+// 		const newContact = {
+// 			...dataForm,
+// 			id: nanoid(),
+// 		}
+// 	setContacts((prev) => 
+// 			 [newContact, ...prev]
+// 		);
+// 	};
+ 
+
+
+
+  
+//   const handleFilter = ({ target: { value } }) => {
+//     setFilter(value);
+//   };
+
+//   const deleteContacts = (id) => {
+//          	setContacts((prev) => 
+//         		prev.filter(el => el.id !== id),
+//         	)
+//          }
+
+ 
+//     console.log(contacts);
+   
+
+//  const filteredContacts= ()=> contacts.filter(contact =>
+//       contact.name.toLowerCase().includes(filter.toLowerCase())
+//     );
+
+//     return (
+
+//       <div className='container'>
+//   <h1 className={css.h1}>Phonebook</h1>
+//         <ContanctForm createContacts={createContacts}/> 
+       
+
+//   <h2 className={css.h2}>Contacts</h2>
+//           <Filter handleFilter ={handleFilter} />      
+        
+//         <ContactList contacts={contacts}
+//          deleteContacts={deleteContacts}
+//             filteredContacts={filteredContacts}
+//         />
+
+  
+// </div>
+
+
+//     )
+//   }
+  
+// export default App;
