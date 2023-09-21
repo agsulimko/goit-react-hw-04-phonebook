@@ -9,7 +9,7 @@ import contactslist from 'components/contactslist.json'
          
       
 const App=() => {
-const prevContacts=contactslist;
+// const prevContacts=contactslist;
     const [contacts, setContacts]= useState(contactslist);
 
    const [filter, setFilter]= useState('');
@@ -30,11 +30,11 @@ const prevContacts=contactslist;
 // <= parsedContacts.length === 0
  
     useEffect(() => {
-     if (contacts !== prevContacts ) {
+     if (contacts !== contactslist ) {
        console.log(contacts);
-      console.log(prevContacts);
-    localStorage.setItem('contacts',JSON.stringify(contacts));
-}}, [contacts])
+      console.log(contactslist);
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+}}, [contacts]);
 
   
    const createContacts = (dataForm) => {
@@ -50,7 +50,7 @@ const prevContacts=contactslist;
 		setContacts((prev) => 
 			 [newContact, ...prev],
 		)
-	}
+	};
  
 
 
