@@ -5,8 +5,8 @@ const ContactForm = ({ createContacts }) => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
-  const handleInputChange = ({ target: { value, name } }) => {
-    if (name === "name") setName(value);
+  const handleInputChange = ({ target: { value, textContent } }) => {
+    if (textContent === "name") setName(value);
     else setNumber(value);
   };
 
