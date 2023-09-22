@@ -7,25 +7,16 @@ import Filter from "components/Filter/Filter";
 import contactslist from "components/contactslist.json";
 
 const App = () => {
-  const [contacts, setContacts] = useState(contactslist);
+  const valueLocalStorage = JSON.parse(localStorage.getItem("contacts"));
+
+  const [contacts, setContacts] = useState(
+    valueLocalStorage.length === 0 ? contactslist : valueLocalStorage
+  );
+
   const [filter, setFilter] = useState("");
 
-  //  const [prevContacts, setPrevContacts] = useState(contactslist); // Добавляем переменную для хранения предыдущего состояния
-
   useEffect(() => {
-    const storedContacts = localStorage.getItem("contacts");
-    const parsedContacts = JSON.parse(storedContacts);
-
-    if (parsedContacts <= 0) return;
-    setContacts(parsedContacts);
-  }, []);
-
-  useEffect(() => {
-    if (contacts !== contactslist) {
-      console.log(contacts);
-      console.log(contactslist);
-      localStorage.setItem("contacts", JSON.stringify(contacts));
-    }
+    localStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts]);
 
   const createContacts = (dataForm) => {
@@ -46,8 +37,6 @@ const App = () => {
   const deleteContacts = (id) => {
     setContacts((prev) => prev.filter((el) => el.id !== id));
   };
-
-  console.log(contacts);
 
   const filteredContacts = contacts.filter((contact) =>
     contact.name.toLowerCase().includes(filter.toLowerCase())

@@ -2,31 +2,20 @@ import { useState } from "react";
 import css from "./ContactForm.module.css";
 
 const ContactForm = ({ createContacts }) => {
-  //  const [id, setId] = useState('')
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-  const [isValid, setIsvalid] = useState(true);
 
   const handleInputChange = ({ target: { value, name } }) => {
-    // this.setState({  [name]: value.trim()});
     if (name === "name") setName(value);
     else setNumber(value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !number)
-      //
-      return setIsvalid(false);
-    //
 
-    createContacts({ name, number, isValid });
-
-    // Clear the input fields after processing
-    //  this.reset();
+    createContacts({ name, number });
     setName("");
     setNumber("");
-    setIsvalid(true);
   };
 
   return (
