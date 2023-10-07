@@ -10,7 +10,7 @@ const App = () => {
   const valueLocalStorage = JSON.parse(localStorage.getItem("contacts"));
 
   const [contacts, setContacts] = useState(
-    valueLocalStorage.length === 0 ? contactslist : valueLocalStorage
+    valueLocalStorage.length > 0 ? valueLocalStorage : contactslist
   );
 
   const [filter, setFilter] = useState("");
@@ -39,7 +39,7 @@ const App = () => {
   };
 
   const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
+    contact.name.toLowerCase().includes(filter.toLowerCase().trim())
   );
 
   return (
