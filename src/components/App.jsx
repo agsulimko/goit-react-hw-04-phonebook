@@ -6,11 +6,17 @@ import ContactList from "./ContactList/ContactList";
 import Filter from "components/Filter/Filter";
 import contactslist from "components/contactslist.json";
 
+// import { useLocalStorage } from "hooks/useLocalStorage";
+
 const App = () => {
+  // const [contacts, setContacts] = useLocalStorage("contacts", []);
+  // ========================================
+  //  второй вариант локалстореджа без использования hooks
   const valueLocalStorage = JSON.parse(localStorage.getItem("contacts"));
 
   const [contacts, setContacts] = useState(
-    valueLocalStorage.length > 0 ? valueLocalStorage : contactslist
+    valueLocalStorage ? valueLocalStorage : contactslist
+    // valueLocalStorage.length > 0 ? valueLocalStorage : contactslist
   );
 
   const [filter, setFilter] = useState("");
@@ -18,7 +24,7 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts]);
-
+  // ============================================================
   const createContacts = (dataForm) => {
     const isAlreadyExist = contacts.find((el) => el.name === dataForm.name);
     if (isAlreadyExist) return alert("Already Exist");
